@@ -26,9 +26,11 @@ late Timer timer;
 
 class _MyHomePageState extends State<MyHomePage> {
   late PokeModel _PokeModel;
+
   @override
   void initState() {
     super.initState();
+
     _getData();
   }
 
@@ -39,8 +41,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget btn() {
     return Container(
-      width: 300,
-      height: 50,
+      width: 100,
+      height: 30,
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(5),
@@ -49,20 +51,25 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(left: 20),
-            child: Align(
-              child: Text(
-                '$num',
-                style: TextStyle(color: Color(0xff333333), fontSize: 20),
-              ),
+          Expanded(
+            child: TextFormField(
+              decoration: const InputDecoration(
+                  //labelText: 'Enter your username',
+                  ),
+              textAlign: TextAlign.center,
+              key: Key(num.toString()),
+              initialValue: num.toString(),
+              onChanged: (query) {
+                num = int.parse(query);
+                _getData();
+              },
             ),
           ),
           Row(
             children: <Widget>[
               GestureDetector(
                 child: Container(
-                  width: 50,
+                  width: 30,
                   height: 30,
                   child: Icon(Icons.remove),
                 ),
@@ -75,37 +82,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     _getData();
                   });
                 },
-                onTapDown: (e) {
-                  if (timer != null) {
-                    timer.cancel();
-                  }
-                  if (num <= 0) {
-                    return;
-                  }
-                  timer = Timer.periodic(Duration(milliseconds: 100), (e) {
-                    setState(() {
-                      if (num <= 0) {
-                        return;
-                      }
-                      num--;
-                      _getData();
-                    });
-                  });
-                },
-                onTapUp: (e) {
-                  if (timer != null) {
-                    timer.cancel();
-                  }
-                },
-                onTapCancel: () {
-                  if (timer != null) {
-                    timer.cancel();
-                  }
-                },
               ),
               GestureDetector(
                 child: Container(
-                  width: 50,
+                  width: 30,
                   height: 30,
                   child: Icon(Icons.add),
                 ),
@@ -117,33 +97,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     num++;
                     _getData();
                   });
-                },
-                onTapDown: (e) {
-                  if (timer != null) {
-                    timer.cancel();
-                  }
-                  if (num >= 999999999) {
-                    return;
-                  }
-                  timer = Timer.periodic(Duration(milliseconds: 100), (e) {
-                    setState(() {
-                      if (num >= 999999999) {
-                        return;
-                      }
-                      num++;
-                      _getData();
-                    });
-                  });
-                },
-                onTapUp: (e) {
-                  if (timer != null) {
-                    timer.cancel();
-                  }
-                },
-                onTapCancel: () {
-                  if (timer != null) {
-                    timer.cancel();
-                  }
                 },
               ),
             ],
@@ -165,6 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
               )
             : Column(children: [
                 btn(),
+                //btn(),
                 Text(num.toString() + " " + _PokeModel.name),
                 Image.network(
                   _PokeModel.sprites["front_default"],
