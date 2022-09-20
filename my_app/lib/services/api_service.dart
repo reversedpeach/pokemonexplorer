@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:my_app/constants.dart';
 import 'package:my_app/model/poke_model.dart';

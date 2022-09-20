@@ -26,17 +26,19 @@ late Timer timer;
 
 class _MyHomePageState extends State<MyHomePage> {
   late PokeModel _PokeModel;
+  bool loading = false;
 
   @override
   void initState() {
     super.initState();
-
     _getData();
   }
 
   Future _getData() async {
     _PokeModel = (await ApiService().getUsers(num))!;
-    Future.delayed(const Duration(seconds: 0)).then((value) => setState(() {}));
+    loading = true;
+    Future.delayed(const Duration(milliseconds: 0))
+        .then((value) => setState(() {}));
   }
 
   Widget btn() {
@@ -49,19 +51,25 @@ class _MyHomePageState extends State<MyHomePage> {
         border: Border.all(color: Color(0x33333333)),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Expanded(
             child: TextFormField(
-              decoration: const InputDecoration(
-                  //labelText: 'Enter your username',
-                  ),
+              keyboardType: TextInputType.number,
+              cursorHeight: 23,
               textAlign: TextAlign.center,
+              autofocus: true,
+              style: const TextStyle(fontSize: 18.0, height: 2.2),
               key: Key(num.toString()),
               initialValue: num.toString(),
               onChanged: (query) {
-                num = int.parse(query);
-                _getData();
+                setState(() {
+                  if (int.parse(query) <= 0) {
+                    return;
+                  }
+                  num = int.parse(query);
+                  loading = false;
+                  _getData();
+                });
               },
             ),
           ),
@@ -75,10 +83,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 onTap: () {
                   setState(() {
-                    if (num <= 0) {
+                    if (num <= 1) {
                       return;
                     }
                     num--;
+                    loading = false;
                     _getData();
                   });
                 },
@@ -95,6 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       return;
                     }
                     num++;
+                    loading = false;
                     _getData();
                   });
                 },
@@ -109,17 +119,21 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        //appBar: AppBar(
-        //  title: const Text('Pokemon test'),
-        //),
-        body: _PokeModel == null
-            ? const Center(
-                child: CircularProgressIndicator(),
+        body: !loading
+            ? const Padding(
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.orange,
+                ),
+                padding: EdgeInsets.all(90),
               )
-            : Column(children: [
+            : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 btn(),
                 //btn(),
-                Text(num.toString() + " " + _PokeModel.name),
+                Text(
+                  num.toString() + " " + _PokeModel.name,
+                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                ),
+
                 Image.network(
                   _PokeModel.sprites["front_default"],
                   scale: 0.5,
