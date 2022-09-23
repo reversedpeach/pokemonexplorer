@@ -4,21 +4,19 @@ import 'package:my_app/model/poke_model.dart';
 import '../model/api_service.dart';
 
 // Have to initialize the first pokemon
-class PokeViewModel {
-  int num;
-  late PokeModel _PokeModel;
+class PokeViewModel with ChangeNotifier {
+  int num = 1;
+  late PokeModel model;
   bool loading = true;
-
-  PokeViewModel({
-    required this.num,
-  });
 
   void increaseNum() {
     num++;
+    notifyListeners();
   }
 
   void decreaseNum() {
     num--;
+    notifyListeners();
   }
 
   bool loadingStatus() {
@@ -27,14 +25,17 @@ class PokeViewModel {
 
   void loadingFalse() {
     loading = false;
+    notifyListeners();
   }
 
   void loadingTrue() {
     loading = true;
+    notifyListeners();
   }
 
   void changeNum(String numString) {
     num = int.parse(numString);
+    notifyListeners();
   }
 
   int getNumInt() {
@@ -48,17 +49,19 @@ class PokeViewModel {
   Future getData() async {
     // viewmodel
     // set in model
-    _PokeModel = (await ApiService().getUsers(num))!;
+    model = (await ApiService().getUsers(num))!;
+
     loading = false;
+    notifyListeners();
     //Future.delayed(const Duration(milliseconds: 0))
     //   .then((value) => setState(() {}));
   }
 
   String getPokeName() {
-    return _PokeModel.getPokeName();
+    return model.getPokeName();
   }
 
   String getPokeImg() {
-    return _PokeModel.getPokeImg();
+    return model.getPokeImg();
   }
 }
