@@ -4,6 +4,7 @@ import 'package:my_app/constants.dart';
 import 'package:my_app/model/poke_model.dart';
 
 class ApiService {
+  // update to model instead
   Future<PokeModel?> getUsers(int num) async {
     try {
       var url = Uri.parse(ApiConstants.baseUrl + "/" + num.toString());

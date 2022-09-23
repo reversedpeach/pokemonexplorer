@@ -1,23 +1,26 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 PokeModel PokeModelFromJson(String str) => PokeModel.fromJson(json.decode(str));
 
-String PokeModelToJson(PokeModel data) => json.encode(data.toJson());
-
 class PokeModel {
+  String name;
+  var sprites;
+
   PokeModel({
     required this.name,
     required this.sprites,
   });
 
-  String name;
-  var sprites;
-
   factory PokeModel.fromJson(Map<String, dynamic> json) =>
       PokeModel(name: json["name"], sprites: json["sprites"]);
 
-  Map<String, dynamic> toJson() => {
-        "name": name,
-        "sprites": sprites,
-      };
+  String getPokeName() {
+    return name;
+  }
+
+  String getPokeImg() {
+    return sprites["front_default"];
+  }
 }
