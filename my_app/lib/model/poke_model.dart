@@ -1,20 +1,42 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-
-PokeModel PokeModelFromJson(String str) => PokeModel.fromJson(json.decode(str));
-
 class PokeModel {
   String name;
   var sprites;
+  int num;
 
   PokeModel({
     required this.name,
     required this.sprites,
+    this.num = 1,
   });
 
-  factory PokeModel.fromJson(Map<String, dynamic> json) =>
-      PokeModel(name: json["name"], sprites: json["sprites"]);
+  void setNum(int newNum) {
+    num = newNum;
+  }
+
+  void increaseNum() {
+    num++;
+  }
+
+  void decreaseNum() {
+    num--;
+  }
+
+  void changeNum(String numString) {
+    num = int.parse(numString);
+  }
+
+  int getNumInt() {
+    return num;
+  }
+
+  String getNumString() {
+    return num.toString();
+  }
+
+  void setPokemon(Map<String, dynamic> json) {
+    name = json["name"];
+    sprites = json["sprites"];
+  }
 
   String getPokeName() {
     return name;

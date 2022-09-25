@@ -1,22 +1,47 @@
 import 'package:flutter/foundation.dart';
 import 'package:my_app/model/poke_model.dart';
-
 import '../model/api_service.dart';
 
-// Have to initialize the first pokemon
 class PokeViewModel with ChangeNotifier {
-  int num = 1;
   late PokeModel model;
   bool loading = true;
 
-  void increaseNum() {
-    num++;
+  PokeViewModel({
+    required this.model,
+  });
+
+  void incButtonClick() {
+    if (model.getNumInt() >= 999999999) {
+      return;
+    }
+    model.increaseNum();
+    loadingTrue();
+    getData();
     notifyListeners();
   }
 
-  void decreaseNum() {
-    num--;
+  void decButtonClick() {
+    if (model.getNumInt() <= 1) {
+      return;
+    }
+    model.decreaseNum();
+    loadingTrue();
+    getData();
     notifyListeners();
+  }
+
+  void queryInput(String query) {
+    if (int.parse(query) <= 0) {
+      return;
+    }
+    model.changeNum(query);
+    loadingTrue();
+    getData();
+    notifyListeners();
+  }
+
+  String getPokeTitle() {
+    return "${model.getNumString()} ${model.getPokeName()}";
   }
 
   bool loadingStatus() {
@@ -33,23 +58,16 @@ class PokeViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void changeNum(String numString) {
-    num = int.parse(numString);
-    notifyListeners();
+  String getNumString() {
+    return model.getNumString();
   }
 
   int getNumInt() {
-    return num;
-  }
-
-  String getNumString() {
-    return num.toString();
+    return model.getNumInt();
   }
 
   Future getData() async {
-    // viewmodel
-    // set in model
-    model = (await ApiService().getUsers(num))!;
+    model = (await ApiService().getPokemon(model))!;
 
     loading = false;
     notifyListeners();
