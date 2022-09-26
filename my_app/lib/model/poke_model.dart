@@ -1,23 +1,48 @@
-import 'dart:convert';
-
-PokeModel PokeModelFromJson(String str) => PokeModel.fromJson(json.decode(str));
-
-String PokeModelToJson(PokeModel data) => json.encode(data.toJson());
-
 class PokeModel {
+  String name;
+  var sprites;
+  int num;
+
   PokeModel({
     required this.name,
     required this.sprites,
+    this.num = 1,
   });
 
-  String name;
-  var sprites;
+  void setNum(int newNum) {
+    num = newNum;
+  }
 
-  factory PokeModel.fromJson(Map<String, dynamic> json) =>
-      PokeModel(name: json["name"], sprites: json["sprites"]);
+  void increaseNum() {
+    num++;
+  }
 
-  Map<String, dynamic> toJson() => {
-        "name": name,
-        "sprites": sprites,
-      };
+  void decreaseNum() {
+    num--;
+  }
+
+  void changeNum(String numString) {
+    num = int.parse(numString);
+  }
+
+  int getNumInt() {
+    return num;
+  }
+
+  String getNumString() {
+    return num.toString();
+  }
+
+  void setPokemon(Map<String, dynamic> json) {
+    name = json["name"];
+    sprites = json["sprites"];
+  }
+
+  String getPokeName() {
+    return name;
+  }
+
+  String getPokeImg() {
+    return sprites["front_default"];
+  }
 }
