@@ -39,9 +39,7 @@ class NumberEditorViewState extends State<NumberEditorView> {
                 key: Key(provider.getNumString()),
                 initialValue: provider.getNumString(),
                 onChanged: (query) {
-                  setState(() {
-                    provider.queryInput(query);
-                  });
+                  provider.queryInput(query);
                 },
               ),
             ),
@@ -54,9 +52,7 @@ class NumberEditorViewState extends State<NumberEditorView> {
                     child: const Icon(Icons.remove),
                   ),
                   onTap: () {
-                    setState(() {
-                      provider.decButtonClick();
-                    });
+                    provider.decButtonClick();
                   },
                 ),
                 GestureDetector(
@@ -66,9 +62,7 @@ class NumberEditorViewState extends State<NumberEditorView> {
                     child: const Icon(Icons.add),
                   ),
                   onTap: () {
-                    setState(() {
-                      provider.incButtonClick();
-                    });
+                    provider.incButtonClick();
                   },
                 ),
               ],
